@@ -4,12 +4,24 @@
     vlan_public_node_ips: "{{ groups[vlan_group] | map('extract', hostvars, ['ansible_host']) | difference([ansible_host]) | list }}"
     vlan_net: "{{ vlan_ip }}/{{ vlan_netmask }}"
 
+- name: Create /etc/network/if-down.d
+  file:
+    path: /etc/network/if-down.d
+    state: directory
+    mode: '0755'
+
 - name: Create if-down config
   template:
     src: if-down.j2
     dest: /etc/network/if-down.d/{{ vlan_interface }}
     mode: '0755'
   notify: Reload interface
+
+- name: Create /etc/network/if-up.d
+  file:
+    path: /etc/network/if-up.d
+    state: directory
+    mode: '0755'
 
 - name: Create if-up config
   template:
@@ -29,3 +41,17 @@
   command: ip link list
   changed_when: no
   register: ip_link_list_result
+
+- name: Add netplan ifup hooks
+  template:
+    src: ifup-hooks.j2
+    dest: /etc/networkd-dispatcher/routable.d/50-ifup-hooks
+    mode: '0755'
+  when: vlan_network_management == 'netplan'
+
+- name: Add netplan ifdown hooks
+  template:
+    src: ifdown-hooks.j2
+    dest: /etc/networkd-dispatcher/off.d/50-ifdown-hooks
+    mode: '0755'
+  when: vlan_network_management == 'netplan'

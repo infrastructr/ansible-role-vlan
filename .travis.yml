@@ -13,6 +13,7 @@ env:
     - MOLECULE_PLATFORM: debian-10
     - MOLECULE_PLATFORM: ubuntu-16.04
     - MOLECULE_PLATFORM: ubuntu-18.04
+    - MOLECULE_PLATFORM: ubuntu-20.04
 
 before_script:
   - wget https://raw.githubusercontent.com/infrastructr/docker-molecule/3.0.4-n2g-1.0.0/docker-compose.yml
