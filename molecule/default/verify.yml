@@ -5,6 +5,10 @@
     - name: Ping all VLAN members
       shell: "ping -c 1 {{ item }}"
       changed_when: no
+      retries: 5
+      delay: 10
+      register: result
+      until: result.rc == 0
       with_items: "{{ groups['all'] | map('extract', hostvars, 'vlan_ip') | list }}"
     - name: Reboot hosts
       reboot:

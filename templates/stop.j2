@@ -1,0 +1,8 @@
+#!/bin/sh
+
+{{ ansible_managed|comment }}
+
+VLAN_INTERFACE="{{ vlan_interface }}"
+
+ifconfig "$VLAN_INTERFACE" down
+ovs-vsctl del-br "$VLAN_INTERFACE"

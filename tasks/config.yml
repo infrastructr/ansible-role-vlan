@@ -12,10 +12,10 @@
 
 - name: Create if-down config
   template:
-    src: if-down.j2
-    dest: /etc/network/if-down.d/{{ vlan_interface }}
+    src: stop.j2
+    dest: "/etc/network/if-down.d/{{ vlan_interface }}"
     mode: '0755'
-  notify: Reload interface
+  notify: Restart VLAN service
 
 - name: Create /etc/network/if-up.d
   file:
@@ -25,33 +25,14 @@
 
 - name: Create if-up config
   template:
-    src: if-up.j2
-    dest: /etc/network/if-up.d/{{ vlan_interface }}
+    src: start.j2
+    dest: "/etc/network/if-up.d/{{ vlan_interface }}"
     mode: '0755'
-  notify: Reload interface
+  notify: Restart VLAN service
 
 - name: Create ports config
   template:
-    src: ovs-ports.j2
-    dest: /etc/network/{{ vlan_interface }}-ovs-ports
+    src: ports.j2
+    dest: "/etc/network/{{ vlan_interface }}-ports"
     mode: '0755'
-  notify: Reload interface
-
-- name: Check interface status
-  command: ip link list
-  changed_when: no
-  register: ip_link_list_result
-
-- name: Add netplan ifup hooks
-  template:
-    src: ifup-hooks.j2
-    dest: /etc/networkd-dispatcher/routable.d/50-ifup-hooks
-    mode: '0755'
-  when: vlan_network_management == 'netplan'
-
-- name: Add netplan ifdown hooks
-  template:
-    src: ifdown-hooks.j2
-    dest: /etc/networkd-dispatcher/off.d/50-ifdown-hooks
-    mode: '0755'
-  when: vlan_network_management == 'netplan'
+  notify: Reload VLAN service

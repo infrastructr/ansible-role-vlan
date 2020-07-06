@@ -1,0 +1,17 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description=Open vSwitch Bridge Manager
+After=openvswitch-switch.service
+
+[Service]
+Type=simple
+RemainAfterExit=yes
+User=root
+Group=root
+ExecStart=/etc/network/if-up.d/{{ vlan_interface }}
+ExecStop=/etc/network/if-down.d/{{ vlan_interface }}
+ExecReload=/etc/network/if-up.d/{{ vlan_interface }}
+
+[Install]
+WantedBy=default.target

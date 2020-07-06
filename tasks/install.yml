@@ -5,3 +5,10 @@
     state: present
     update_cache: yes
     cache_valid_time: 3600
+
+- name: Create VLAN service
+  template:
+    src: vlan.service.j2
+    dest: "/etc/systemd/system/{{ vlan_interface }}.service"
+    mode: '0644'
+  notify: Enable VLAN service

@@ -1,0 +1,29 @@
+#!/bin/sh
+
+{{ ansible_managed|comment }}
+
+VLAN_INTERFACE="{{ vlan_interface }}"
+VLAN_NETWORK="{{ vlan_net }}"
+BRIDGES=$(ovs-vsctl list-br)
+
+addBridge(){
+    ovs-vsctl add-br "$VLAN_INTERFACE"
+    ovs-vsctl set bridge "$VLAN_INTERFACE" stp_enable=true
+}
+
+enableBridge(){
+    ip address add "$VLAN_NETWORK" dev "$VLAN_INTERFACE"
+    ip link set "$VLAN_INTERFACE" up
+    ifconfig "$VLAN_INTERFACE" up
+    /etc/network/$VLAN_INTERFACE-ports
+}
+
+case "$BRIDGES" in
+  *"$VLAN_INTERFACE"*)
+    ;;
+  *)
+    addBridge
+    ;;
+esac
+
+enableBridge

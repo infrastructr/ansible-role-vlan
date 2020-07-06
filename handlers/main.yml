@@ -1,3 +1,17 @@
 ---
-- name: Reload interface
-  include_tasks: reload.yml
+- name: Enable VLAN service
+  systemd:
+    name: "{{ vlan_interface }}"
+    enabled: yes
+    state: started
+    daemon_reload: yes
+
+- name: Restart VLAN service
+  systemd:
+    name: "{{ vlan_interface }}"
+    state: restarted
+
+- name: Reload VLAN service
+  systemd:
+    name: "{{ vlan_interface }}"
+    state: reloaded
