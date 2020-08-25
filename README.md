@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/infrastructr/ansible-role-vlan.svg?branch=master)](https://travis-ci.org/infrastructr/ansible-role-vlan)
 [![Ansible Galaxy](https://img.shields.io/badge/role-infrastructr.vlan-blue.svg)](https://galaxy.ansible.com/infrastructr/vlan/)
+[![Ansible Galaxy Quality Score](https://img.shields.io/ansible/quality/49619)](https://galaxy.ansible.com/nl2go/clickhouse_backup/)
 [![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/infrastructr/ansible-role-vlan)](https://galaxy.ansible.com/infrastructr/vlan)
 [![Ansible Galaxy Downloads](https://img.shields.io/ansible/role/d/49619.svg?color=blue)](https://galaxy.ansible.com/infrastructr/vlan/)
 
